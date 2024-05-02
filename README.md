@@ -16,7 +16,22 @@ Once the index components are selected and historical data is gathered, the proj
 #### Insights and Implications
 
 By analyzing the index's performance, investors can gain valuable insights into market trends, sector dynamics, and investment opportunities. The construction of a market-cap weighted index allows for a comprehensive evaluation of market performance, aiding investors in making informed decisions and optimizing their investment strategies.
-
+#### Packages Used
+``` py
+from pandas_datareader.data import DataReader
+from pandas_datareader import data as pdr # pip install pandas-datareader
+from datetime import date 
+import yfinance as yf
+yf.pdr_override()
+import pandas as pd
+from datetime import datetime as dt
+import matplotlib.pyplot as plt
+from numpy.random import normal, seed
+from scipy.stats import norm
+import seaborn as sns
+from numpy.random import choice
+import numpy as np
+```
 ## Data Collection, Loading and Cleaning
 
 This code retrieves information about stocks using their ticker symbols from different stock exchanges (NYSE, NASDAQ, and AMEX), stores the data in a DataFrame, and then saves it to a CSV file. This code essentially automates the process of collecting stock information from multiple sources, consolidates it into a single dataset, and saves it for further analysis.
