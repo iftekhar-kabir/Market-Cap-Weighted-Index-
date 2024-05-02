@@ -17,7 +17,7 @@ Once the index components are selected and historical data is gathered, the proj
 
 By analyzing the index's performance, investors can gain valuable insights into market trends, sector dynamics, and investment opportunities. The construction of a market-cap weighted index allows for a comprehensive evaluation of market performance, aiding investors in making informed decisions and optimizing their investment strategies.
 #### Packages Used
-``` py
+```py
 from pandas_datareader.data import DataReader
 from pandas_datareader import data as pdr # pip install pandas-datareader
 from datetime import date 
@@ -35,7 +35,7 @@ import numpy as np
 ## Data Collection, Loading and Cleaning
 
 This code retrieves information about stocks using their ticker symbols from different stock exchanges (NYSE, NASDAQ, and AMEX), stores the data in a DataFrame, and then saves it to a CSV file. This code essentially automates the process of collecting stock information from multiple sources, consolidates it into a single dataset, and saves it for further analysis.
-``` py
+```py
 
 def get_stock_info(ticker): # This function takes a ticker symbol as input.
     try:
@@ -76,7 +76,7 @@ df.info()
 df.to_csv('stock_info.csv', index=False)
 ```
 This code segment loads, cleans, and combines stock listing data from a CSV file which we automated in the prevoius section. Overall, this code segment loads stock listing data from a CSV file, cleans it by removing rows with missing sector and market capitalization information, and prepares it for further analysis.
-``` py
+```py
 listings = pd.read_csv("stock_info.csv", index_col = 'Ticker') # creating Excel file object
 listings.head()
 listings.info()
@@ -97,7 +97,7 @@ AAP      Consumer Cyclical  4.350302e+09
 ```
 ## Selecting Index Components:
 Here, we select the required tickers for a market cap-weighted index from each sector. Identifies the leading stocks from each sector based on their market capitalization, which are then chosen as the components of the market cap-weighted index.
-``` py
+```py
 categorical = listings.groupby(["Sector"])["Market Cap"].nlargest(1)
 print(categorical)
 categorical.info()
@@ -156,7 +156,7 @@ Here's a description of each ticker included in the index along with their corre
 These companies represent a diverse range of sectors, including technology, retail, energy, finance, healthcare, industrials, real estate, and utilities, providing broad exposure to the market.
 ## Fetching Historical Stock Data:
 Using Yahoo Finance API (yfinance), the code fetches historical stock data for the selected index components starting from January 1, 2019. This code segment fetches historical stock data for the selected index components, calculates the latest prices of these components, and then calculates the number of outstanding shares for each component.
-``` py
+```py
 start = date(2019,1,1)
 stock_data = pdr.get_data_yahoo(index_tickers, start) # Fetching historical data of index component
 stock_data.info()
@@ -258,7 +258,7 @@ dtypes: float64(56), int64(10)
 memory usage: 734.7 KB
 ```
 Finally, the creation of the ```components``` DataFrame allows for efficient organization and access to the relevant information required for constructing and analyzing the market cap-weighted index. It streamlines the data preparation process and ensures that only the necessary data is retained, enhancing the clarity and effectiveness of subsequent analyses.
-```
+```py
                         Sector    Market Cap       Price
 Ticker                                                  
 LIN            Basic Materials  2.120000e+11  181.889999
@@ -269,7 +269,7 @@ XOM                     Energy  4.660000e+11  442.790009
 ```
 ## Calculating Market Cap and Index Performance:
 This code segment calculates the aggregated market capitalization and performance of the market cap-weighted index based on historical stock data and the number of outstanding shares. The code calculates market capitalization for each index component based on the latest available prices. It then calculates the historical performance of the index by aggregating market capitalizations and normalizing to a base value of 100. 
-``` py
+```py
 historical_prices = stock_data["Adj Close"]
 historical_prices.info()
 print(historical_prices)
@@ -285,7 +285,7 @@ print(index)
 ```
 ## Visualizing Index Performance:
 The index performance is visualized using matplotlib with a white grid style and a specified background color. The plot shows the trend of the market-cap weighted index over time.
-``` py
+```py
 sns.set_style("whitegrid")
 fig = plt.figure(figsize=(10, 6), dpi=300).set_facecolor('#FEFDED')   # Set background color using hexcode
 index.plot(color='#76ABAE', linewidth=2)  # Using hexcode for blue color
@@ -302,7 +302,7 @@ plt.show()
 
 ## Further Evaluation
 The code evaluates component weights, value-weighted component returns, and compares the index performance with the S&P 500 index. Component weights provide insights into the relative importance of each stock in the index, helping investors understand which stocks have a larger impact on the index's performance. The index return represents the overall performance of the market cap-weighted index over the specified period, serving as a key metric for evaluating investment performance. Value-weighted component returns indicate how much each index component contributes to the index's total return, reflecting the impact of individual stock performance on the index's overall performance.
-``` py
+```py
 
 # Component weights
 components.head()
@@ -320,7 +320,7 @@ print(weighted_return)
 ```
 #### Visualization
 ![Value_weighted Component Returns](https://github.com/iftekhar-kabir/Market-Cap-Weighted-Index-/assets/163831745/61f043a7-2324-4a6d-8e3a-cf326bee546f)
-``` py
+```py
 sns.set_style("whitegrid")
 plt.figure(figsize=(10, 6), dpi=300, facecolor='#FEFDED')
 weighted_return.sort_values().plot(kind='barh', color='#76ABAE')
@@ -332,7 +332,7 @@ plt.show()
 ```
 ## Index VS S&P 500
 This code segment compares the performance of the market cap-weighted index with the performance of the S&P 500 index over a specified period. This code segment allows for a comparative analysis of the performance of the market cap-weighted index and the S&P 500 index over the specified period. By normalizing both indices to a common starting point, it facilitates a meaningful comparison of their performance trends and relative returns.
-``` py
+```py
 df_market = index.to_frame("Index")
 SP500 = pd.read_csv("G:\Downloads\S&P 500 Historical Data.csv", 
                      parse_dates = ['Date'], index_col= 'Date')
@@ -346,7 +346,7 @@ df_market.head()
 ```
 #### Visualization
 ![image](https://github.com/iftekhar-kabir/Market-Cap-Weighted-Index-/assets/163831745/8408154a-68ce-4df8-b4e7-6dbe1b85cf79)
-``` py
+```py
 sns.set_style("whitegrid")
 plt.figure(figsize=(10, 6), dpi=300, facecolor='#FEFDED')
 df_market["Index"].plot(color='#76ABAE', linewidth=2)  
@@ -363,7 +363,7 @@ plt.show()
 This code segment calculates the rolling volatility of the market cap-weighted index and the S&P 500 index over a 30-day period. Rolling volatility is a measure of the variability of returns over a specified period, providing insights into the market's stability and risk levels over time. By calculating multi-period returns over a rolling window, this code segment captures the changing volatility of the market cap-weighted index and the S&P 500 index, allowing for a dynamic assessment of their risk levels.
 #### Visualization
 ![image](https://github.com/iftekhar-kabir/Market-Cap-Weighted-Index-/assets/163831745/fdeaebdb-a61e-45ef-a8be-23089e81c080)
-``` py
+```py
 sns.set_style("whitegrid")
 plt.figure(figsize=(10, 6), dpi=300, facecolor='#FEFDED')
 multi_period_returns["Index"].plot(color='#76ABAE', linewidth=1.5) 
@@ -380,7 +380,7 @@ plt.show()
 This code segment calculates the daily returns of the historical stock prices and then computes the correlation matrix of these returns. Daily returns capture the day-to-day price fluctuations of the index components, providing insights into their short-term performance and volatility. The correlation matrix helps identify relationships between index components' returns, highlighting whether they move in the same direction (positive correlation), opposite directions (negative correlation), or independently (zero correlation). Understanding the correlations between index components' returns is crucial for diversification strategies, risk management, and portfolio construction, as it informs investors about the degree of interdependence among assets within the index.
 #### Visualization
 ![image](https://github.com/iftekhar-kabir/Market-Cap-Weighted-Index-/assets/163831745/dbb750bb-10a2-4d4f-9e7f-bcb935f3254d)
-``` py
+```py
 sns.heatmap(correlations, annot=True)
 plt.xticks(rotation=45)
 plt.title('Daily Return Correlations')
